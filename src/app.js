@@ -5,6 +5,7 @@ import path from 'path';
 import Youch from 'youch';
 
 import routes from './routes';
+import './database';
 
 class App {
   constructor() {
