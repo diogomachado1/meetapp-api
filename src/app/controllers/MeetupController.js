@@ -81,9 +81,7 @@ class MeetupController {
 
     const meetup = await Meetup.findByPk(req.params.id);
 
-    const hourStartMeetup = startOfHour(meetup.date);
-
-    if (isBefore(hourStartMeetup, new Date())) {
+    if (meetup.past) {
       return res.status(400).json({ error: `You can't update past meetup` });
     }
 
