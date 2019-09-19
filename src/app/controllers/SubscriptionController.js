@@ -8,22 +8,33 @@ import Queue from '../../libs/Queue';
 import User from '../models/User';
 
 class SubscriptionController {
-  async store(req, res) {
-    const schema = Yup.object().shape({
-      meetup_id: Yup.number().required(),
+  async index(req, res) {
+    const subscriptions = await Subscription.findAll({
+      where: {
+        user_id: req.userId,
+      },
+      include: [
+        {
+          model: Meetup,
+          where: {
+            date: {
+              [Op.gt]: new Date(),
+            },
+          },
+          required: true,
+        },
+      ],
+      order: [[Meetup, 'date']],
     });
 
-    try {
-      await schema.validate(req.body);
-    } catch (error) {
-      return res.status(400).json({ error: error.errors[0] });
-    }
+    return res.json(subscriptions);
+  }
+  async store(req, res) {
 
-    const meetup = await Meetup.findByPk(req.body.meetup_id, {
+    const meetup = await Meetup.findByPk(req.params.meetupId, {
       include: [
         {
           model: User,
-          as: 'user',
           required: true,
         },
       ],
@@ -51,7 +62,6 @@ class SubscriptionController {
         {
           model: Meetup,
           required: true,
-          as: 'meetup',
           where: {
             date: {
               [Op.between]: [startOfHour(meetup.date), endOfHour(meetup.date)],
@@ -73,7 +83,7 @@ class SubscriptionController {
     }
 
     const subscription = await Subscription.create({
-      ...req.body,
+      meetup_id: req.params.meetupId,
       user_id: req.userId,
     });
 
@@ -86,12 +96,10 @@ class SubscriptionController {
         },
         {
           model: Meetup,
-          as: 'meetup',
           attributes: ['title', 'user_id'],
           include: [
             {
               model: User,
-              as: 'user',
               attributes: ['name', 'email'],
             },
           ],
