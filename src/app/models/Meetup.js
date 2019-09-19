@@ -1,5 +1,5 @@
-import Sequelize, { Model } from 'sequelize';
 import { isBefore } from 'date-fns';
+import Sequelize, { Model } from 'sequelize';
 
 class Meetup extends Model {
   static init(sequelize) {
@@ -20,13 +20,13 @@ class Meetup extends Model {
         sequelize,
       }
     );
-
     return this;
   }
 
   static associate(models) {
-    this.belongsTo(models.File, { foreignKey: 'file_id', as: 'banner' });
-    this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+    this.hasMany(models.Subscription, { foreignKey: 'meetup_id' });
+    this.belongsTo(models.File, { foreignKey: 'file_id' });
+    this.belongsTo(models.User, { foreignKey: 'user_id' });
   }
 }
 
