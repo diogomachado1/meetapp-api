@@ -1,4 +1,3 @@
-import * as Yup from 'yup';
 import { endOfHour, startOfHour } from 'date-fns';
 import { Op } from 'sequelize';
 import Meetup from '../models/Meetup';
@@ -29,8 +28,8 @@ class SubscriptionController {
 
     return res.json(subscriptions);
   }
-  async store(req, res) {
 
+  async store(req, res) {
     const meetup = await Meetup.findByPk(req.params.meetupId, {
       include: [
         {

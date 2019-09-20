@@ -7,7 +7,7 @@ import User from '../models/User';
 
 class MeetupController {
   async index(req, res) {
-    const meetups = await Meetup.findAll({
+    const meetup = await Meetup.findByPk(req.params.id, {
       where: { user_id: req.userId },
       attributes: [
         'id',
@@ -21,18 +21,16 @@ class MeetupController {
       include: [
         {
           model: File,
-          as: 'banner',
-          attributes: ['name', 'path', 'url'],
+          attributes: ['id', 'name', 'path', 'url'],
         },
         {
           model: User,
-          as: 'user',
           attributes: ['name', 'email'],
         },
       ],
     });
 
-    return res.json(meetups);
+    return res.json(meetup);
   }
 
   async store(req, res) {
