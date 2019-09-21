@@ -9,6 +9,4 @@ WORKDIR /meetapp
 
 RUN yarn && yarn build
 
-RUN ls
-
 CMD yarn start
