@@ -7,6 +7,8 @@ COPY ./ /meetapp
 
 WORKDIR /meetapp
 
-RUN npm i && npm build
+RUN yarn && yarn build
 
-CMD npm start
+RUN ls
+
+CMD yarn start
