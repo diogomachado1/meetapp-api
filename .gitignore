@@ -3,3 +3,8 @@ tmp/uploads/*
 !tmp/uploads/.gitkeep
 dist
 .env
+.env.test
+__tests__/coverage/*
+
+__tests__/database.sqlite
+

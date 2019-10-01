@@ -106,9 +106,11 @@ class SubscriptionController {
       ],
     });
 
-    await Queue.add(SubscriptionMail.key, {
-      subscriptionGet,
-    });
+    if (process.env.NODE_ENV !== 'test') {
+      await Queue.add(SubscriptionMail.key, {
+        subscriptionGet,
+      });
+    }
 
     return res.json(subscriptionGet);
   }

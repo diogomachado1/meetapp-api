@@ -19,6 +19,8 @@ routes.post('/sessions', SessionController.store);
 
 routes.post('/users', UserController.store);
 routes.use(authMiddleware);
+routes.get('/testAuth', (req, res) => res.send('Test Auth'));
+
 routes.put('/users', UserController.update);
 
 routes.get('/meetup/:id', MeetupController.index);
