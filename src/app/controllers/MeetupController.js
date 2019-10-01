@@ -6,7 +6,7 @@ import File from '../models/File';
 import User from '../models/User';
 
 class MeetupController {
-  async index(req, res) {
+  async show(req, res) {
     const meetup = await Meetup.findByPk(req.params.id, {
       where: { user_id: req.userId },
       attributes: [
@@ -33,6 +33,33 @@ class MeetupController {
     return res.json(meetup);
   }
 
+  async index(req, res) {
+    const meetups = await Meetup.findAll({
+      where: { user_id: req.userId },
+      attributes: [
+        'id',
+        'title',
+        'description',
+        'location',
+        'date',
+        'file_id',
+        'user_id',
+      ],
+      include: [
+        {
+          model: File,
+          attributes: ['name', 'path', 'url'],
+        },
+        {
+          model: User,
+          attributes: ['name', 'email'],
+        },
+      ],
+    });
+
+    return res.json(meetups);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       title: Yup.string().required(),
@@ -54,12 +81,19 @@ class MeetupController {
       return res.status(400).json({ error: 'Past dates are not permitted' });
     }
 
-    const { title, description, location, date } = await Meetup.create({
+    const {
+      title,
+      description,
+      location,
+      date,
+      id,
+      user_id,
+    } = await Meetup.create({
       ...req.body,
       user_id: req.userId,
     });
 
-    return res.json({ title, description, location, date });
+    return res.json({ title, description, location, date, id, user_id });
   }
 
   async update(req, res) {
@@ -84,7 +118,6 @@ class MeetupController {
     }
 
     const hourStart = startOfHour(parseISO(req.body.date));
-
     if (isBefore(hourStart, new Date())) {
       return res.status(400).json({ error: 'Past dates are not permitted' });
     }
@@ -117,7 +150,7 @@ class MeetupController {
 
     await meetup.destroy();
 
-    return res.send();
+    return res.status(204).send();
   }
 }
 

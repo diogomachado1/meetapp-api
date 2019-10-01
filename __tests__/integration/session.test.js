@@ -67,7 +67,6 @@ describe('Session Create', () => {
     const user = await createUser();
     const { email, password } = user;
 
-    console.log(user);
     const {
       body: { token },
     } = await request(app)
@@ -77,7 +76,6 @@ describe('Session Create', () => {
     const response = await request(app)
       .get('/testAuth')
       .set('Authorization', `bearer ${token}`);
-    console.log(response.body);
 
     expect(response.status).toBe(200);
   });
