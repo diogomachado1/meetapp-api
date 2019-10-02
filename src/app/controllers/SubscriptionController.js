@@ -25,7 +25,6 @@ class SubscriptionController {
       ],
       order: [[Meetup, 'date']],
     });
-
     return res.json(subscriptions);
   }
 
@@ -50,7 +49,7 @@ class SubscriptionController {
     }
 
     if (meetup.past) {
-      return res.status(400).json({ error: `You can't subscribe past meetup` });
+      return res.status(400).json({ error: "You can't subscribe past meetup" });
     }
 
     const subscriptions = await Subscription.findOne({
@@ -74,10 +73,10 @@ class SubscriptionController {
       if (subscriptions.meetup_id === meetup.id) {
         return res
           .status(400)
-          .json({ error: `You can't subscribe same meetup` });
+          .json({ error: "You can't subscribe same meetup" });
       }
       return res.status(400).json({
-        error: `You can't subscribe meetup at same time another meetup`,
+        error: "You can't subscribe in meetups that happen at same time",
       });
     }
 

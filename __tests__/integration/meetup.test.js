@@ -31,7 +31,7 @@ describe('Meetups', () => {
     expect(response.body).toMatchObject(meetup);
   });
 
-  it('should be not able to create a meetup with past date', async () => {
+  it('should not be able to create a past date meetup', async () => {
     const { token, file } = await createFile();
     const meetup = await factory.attrs('Meetup', {
       date: faker.date.past().toISOString(),
@@ -56,7 +56,7 @@ describe('Meetups', () => {
     expect(response.body).toMatchObject(newMeetup);
   });
 
-  it('should be not able to update a meetup to past date', async () => {
+  it('should not be able to update a past date meetup', async () => {
     const { token, file, meetup } = await createMeetup();
     const newMeetup = await factory.attrs('Meetup', {
       date: faker.date.past().toISOString(),
@@ -68,7 +68,7 @@ describe('Meetups', () => {
     expect(response.status).toBe(400);
   });
 
-  it('should be not able to update a past meetup', async () => {
+  it('should not be able to update a past meetup', async () => {
     const { token, file } = await createFile();
     const meetup = await factory.create('Meetup', {
       file_id: file.id,
@@ -82,7 +82,7 @@ describe('Meetups', () => {
     expect(response.status).toBe(400);
   });
 
-  it('should be not able to update a meetup with another owner', async () => {
+  it('should not be able to update a another owner meetup', async () => {
     const { file, meetup } = await createMeetup();
     const { token } = await createTokenAndUser();
     const newMeetup = await factory.attrs('Meetup');
@@ -93,7 +93,7 @@ describe('Meetups', () => {
     expect(response.status).toBe(401);
   });
 
-  it('should be able to owner see your meetups', async () => {
+  it('should be able to see your own meetups', async () => {
     const { token, meetup } = await createMeetup();
     const response = await request(app)
       .get(`/meetup`)
@@ -101,7 +101,7 @@ describe('Meetups', () => {
     expect(response.body).toMatchObject([meetup]);
   });
 
-  it('should be able to owner see one your meetups', async () => {
+  it('should be able to see a single meetup', async () => {
     const { token, meetup } = await createMeetup();
     const response = await request(app)
       .get(`/meetup/${meetup.id}`)
@@ -109,7 +109,7 @@ describe('Meetups', () => {
     expect(response.body).toMatchObject(meetup);
   });
 
-  it('should be able to owner delete your meetups', async () => {
+  it('should be able to owner delete your own meetups', async () => {
     const { token, meetup } = await createMeetup();
     const response = await request(app)
       .delete(`/meetup/${meetup.id}`)
@@ -131,7 +131,7 @@ describe('Meetups', () => {
     expect(response.status).toBe(400);
   });
 
-  it('should not be able to delete a meetups with another owner', async () => {
+  it('should not be able to delete a another owner meetups', async () => {
     const { meetup } = await createMeetup();
     const { token } = await createTokenAndUser();
     const response = await request(app)
