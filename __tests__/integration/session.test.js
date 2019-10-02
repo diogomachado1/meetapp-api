@@ -5,7 +5,7 @@ import app from '../../src/app';
 import truncate from '../util/truncate';
 import { createUser } from '../util/functions';
 
-describe('Session Create', () => {
+describe('Session', () => {
   beforeEach(async () => {
     await truncate();
   });

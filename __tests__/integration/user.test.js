@@ -7,7 +7,7 @@ import truncate from '../util/truncate';
 import factory from '../factories';
 import { createTokenAndUser } from '../util/functions';
 
-describe('User Create', () => {
+describe('User', () => {
   beforeEach(async () => {
     await truncate();
   });

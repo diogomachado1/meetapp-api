@@ -7,7 +7,7 @@
     "dev": "nodemon src/server.js",
     "queue": "nodemon src/queue.js",
     "build": "sucrase ./src -d ./dist --transforms imports",
-    "prestart": "NODE_ENV=test sequelize db:migrate",
+    "prestart": "sequelize db:migrate",
     "start": "NODE_ENV=production node dist/server.js",
     "pretest": "NODE_ENV=test sequelize db:migrate",
     "test": "NODE_ENV=test jest --detectOpenHandles",
