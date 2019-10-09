@@ -1,10 +1,12 @@
 import { endOfHour, startOfHour } from 'date-fns';
 import { Op } from 'sequelize';
+
 import Meetup from '../models/Meetup';
 import Subscription from '../models/Subscription';
 import SubscriptionMail from '../jobs/SubscriptionMail';
 import Queue from '../../libs/Queue';
 import User from '../models/User';
+import Notification from '../schemas/Notification';
 
 class SubscriptionController {
   async index(req, res) {
@@ -15,6 +17,7 @@ class SubscriptionController {
       include: [
         {
           model: Meetup,
+          as: 'meetup',
           where: {
             date: {
               [Op.gt]: new Date(),
@@ -23,7 +26,7 @@ class SubscriptionController {
           required: true,
         },
       ],
-      order: [[Meetup, 'date']],
+      order: [['meetup', 'date']],
     });
     return res.json(subscriptions);
   }
@@ -33,6 +36,7 @@ class SubscriptionController {
       include: [
         {
           model: User,
+          as: 'user',
           required: true,
         },
       ],
@@ -60,6 +64,7 @@ class SubscriptionController {
         {
           model: Meetup,
           required: true,
+          as: 'meetup',
           where: {
             date: {
               [Op.between]: [startOfHour(meetup.date), endOfHour(meetup.date)],
@@ -80,38 +85,43 @@ class SubscriptionController {
       });
     }
 
-    const subscription = await Subscription.create({
-      meetup_id: req.params.meetupId,
-      user_id: req.userId,
+    const subscription = await (await Subscription.create(
+      {
+        meetup_id: req.params.meetupId,
+        user_id: req.userId,
+      },
+      {
+        include: [
+          {
+            model: User,
+            as: 'user',
+            attributes: ['name', 'email'],
+          },
+          {
+            model: Meetup,
+            as: 'meetup',
+            attributes: ['title', 'user_id'],
+            include: [
+              {
+                model: User,
+                as: 'user',
+                attributes: ['name', 'email'],
+              },
+            ],
+          },
+        ],
+      }
+    )).reload();
+    await Notification.create({
+      content: `Nova inscrição de ${subscription.user.name} no meetup "${subscription.meetup.title}".`,
+      user: subscription.meetup.user_id,
     });
-
-    const subscriptionGet = await Subscription.findByPk(subscription.id, {
-      include: [
-        {
-          model: User,
-          as: 'user',
-          attributes: ['name', 'email'],
-        },
-        {
-          model: Meetup,
-          attributes: ['title', 'user_id'],
-          include: [
-            {
-              model: User,
-              attributes: ['name', 'email'],
-            },
-          ],
-        },
-      ],
-    });
-
     if (process.env.NODE_ENV !== 'test') {
       await Queue.add(SubscriptionMail.key, {
-        subscriptionGet,
+        subscription,
       });
     }
-
-    return res.json(subscriptionGet);
+    return res.json(subscription);
   }
 }
 

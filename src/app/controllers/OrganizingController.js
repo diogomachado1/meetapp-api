@@ -45,6 +45,7 @@ class OrganizingController {
         },
         {
           model: User,
+          as: 'user',
           attributes: ['name', 'email'],
         },
       ],

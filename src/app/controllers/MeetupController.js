@@ -25,6 +25,7 @@ class MeetupController {
         },
         {
           model: User,
+          as: 'user',
           attributes: ['name', 'email'],
         },
       ],
@@ -52,6 +53,7 @@ class MeetupController {
         },
         {
           model: User,
+          as: 'user',
           attributes: ['name', 'email'],
         },
       ],

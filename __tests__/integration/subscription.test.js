@@ -105,6 +105,6 @@ describe('Subscription', () => {
     const response = await request(app)
       .get(`/subscriptions`)
       .set('Authorization', `bearer ${token}`);
-    expect(response.body).toMatchObject([{ Meetup: meetup }]);
+    expect(response.body).toMatchObject([{ meetup }]);
   });
 });
