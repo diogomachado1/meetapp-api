@@ -27,4 +27,4 @@ jobs:
         - docker push diogo8machado/meetapp-api
         - echo "$private_ssh" >> ~/.ssh/id_rsa
         - chmod 600 ~/.ssh/id_rsa
-        - ssh root@diogomachado.site "docker pull diogo8machado/meetapp-api:latest && docker service update --image diogo8machado/meetapp-api:latest	meetapp_backend"
+        - ssh -o "StrictHostKeyChecking no" root@diogomachado.site "docker pull diogo8machado/meetapp-api:latest && docker service update --image diogo8machado/meetapp-api:latest	meetapp_backend"
