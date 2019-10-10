@@ -4,7 +4,6 @@ jobs:
       language: node_js
       services:
         - mongodb
-        - docker
       node_js:
       - '10'
       branches:
@@ -20,5 +19,10 @@ jobs:
       script:
         - npm run test
     - stage: deploy
+      services:
+        - docker
       script:
         - docker build -t diogo8machado/meetapp-api .
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker push diogo8machado/meetapp-api
+
