@@ -12,4 +12,4 @@ before_install:
 install:
   - npm install
 script:
-  - npm run tests
+  - npm run test
