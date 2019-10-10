@@ -10,15 +10,17 @@ branches:
 cache:
   directories:
   - node_modules
-before_install:
-  - npm update
-install:
-  - npm install
+
+
 jobs:
   include:
     - stage: test
+    before_install:
+     - npm update
+    install:
+      - npm install
     script:
       - npm run test
-    - stage: build
+    - stage: deploy
     script:
       - docker build -t diogo8machado/meetapp-api .
