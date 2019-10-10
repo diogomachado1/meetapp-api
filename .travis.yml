@@ -6,4 +6,4 @@ jobs:
       script:
         - echo "$private_ssh" >> ~/.ssh/id_rsa
         - chmod 600 ~/.ssh/id_rsa
-        - ssh -o "CheckHostIP=no" root@diogomachado.site "docker pull diogo8machado/meetapp-api:latest && docker service update --image diogo8machado/meetapp-api:latest	meetapp_backend"
+        - ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@diogomachado.site "docker pull diogo8machado/meetapp-api:latest && docker service update --image diogo8machado/meetapp-api:latest	meetapp_backend"
