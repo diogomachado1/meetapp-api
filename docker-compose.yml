@@ -11,7 +11,7 @@ services:
       DB_HOST: db
       DB_USER: postgres
       DB_PASS: docker
-      DB_NAME: regim
+      DB_NAME: meetapp
 
     depends_on:
       - db
@@ -20,8 +20,12 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: docker
-      POSTGRES_DB: regim
+      POSTGRES_DB: meetapp
     volumes:
       - pg_data_regim:/var/lib/postgresql/data
+  mongo:
+    image: mongo
+  redis:
+    image: redis
 volumes:
   pg_data_regim:
