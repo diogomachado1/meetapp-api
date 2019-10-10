@@ -7,6 +7,6 @@ jobs:
         - echo "$private_ssh" >> ~/.ssh/id_rsa
         - chmod 600 ~/.ssh/id_rsa
         - ssh-keyscan diogomachado.site >> $HOME/.ssh/known_hosts
-        - cat ~/.ssh/known_hosts
+        - cat  ~/.ssh/id_rsa
         - sshpass -p passphrase ssh-add ~/.ssh/id_rsa
         - ssh root@diogomachado.site "docker pull diogo8machado/meetapp-api:latest && docker service update --image diogo8machado/meetapp-api:latest	meetapp_backend"
