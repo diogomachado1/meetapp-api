@@ -1,26 +1,24 @@
-language: node_js
-services:
-  - mongodb
-  - docker
-node_js:
-- '10'
-branches:
-  only:
-  - master
-cache:
-  directories:
-  - node_modules
-
-
 jobs:
   include:
     - stage: test
-    before_install:
-     - npm update
-    install:
-      - npm install
-    script:
-      - npm run test
+      language: node_js
+      services:
+        - mongodb
+        - docker
+      node_js:
+      - '10'
+      branches:
+        only:
+        - master
+      cache:
+        directories:
+        - node_modules
+      before_install:
+      - npm update
+      install:
+        - npm install
+      script:
+        - npm run test
     - stage: deploy
-    script:
-      - docker build -t diogo8machado/meetapp-api .
+      script:
+        - docker build -t diogo8machado/meetapp-api .
