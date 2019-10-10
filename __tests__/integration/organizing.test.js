@@ -11,9 +11,6 @@ describe('Organizing', () => {
   beforeEach(async () => {
     await truncate();
   });
-  afterAll(async () => {
-    await new Promise(item => setTimeout(() => item(), 500)); // avoid jest open handle error
-  });
 
   it('should be able to list meetups to subscribe', async () => {
     const { user } = await createTokenAndUser();

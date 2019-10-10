@@ -15,9 +15,6 @@ describe('Meetups', () => {
   beforeEach(async () => {
     await truncate();
   });
-  afterAll(async () => {
-    await new Promise(resolve => setTimeout(() => resolve(), 500)); // avoid jest open handle error
-  });
 
   it('should be able to create a meetup', async () => {
     const { token, file } = await createFile();

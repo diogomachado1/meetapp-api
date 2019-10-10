@@ -15,9 +15,6 @@ describe('Subscription', () => {
   beforeEach(async () => {
     await truncate();
   });
-  afterAll(async () => {
-    await new Promise(resolve => setTimeout(() => resolve(), 500)); // avoid jest open handle error
-  });
 
   it('should not be able to subscribe in your own meetup', async () => {
     const { token, meetup } = await createMeetup();

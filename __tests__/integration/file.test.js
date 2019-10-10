@@ -11,9 +11,6 @@ describe('File', () => {
   beforeEach(async () => {
     await truncate();
   });
-  afterAll(async () => {
-    await new Promise(item => setTimeout(() => item(), 500)); // avoid jest open handle error
-  });
 
   it('should be able to create a file', async () => {
     const { token } = await createTokenAndUser();
