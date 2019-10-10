@@ -14,7 +14,7 @@ import NotificationController from './app/controllers/NotificationController';
 const routes = new Router();
 const upload = multer(multerConfig);
 
-routes.get('/', (req, res) => res.send('ok'));
+routes.get('/', (req, res) => res.send('Hello'));
 
 routes.post('/sessions', SessionController.store);
 
