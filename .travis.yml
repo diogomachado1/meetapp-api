@@ -1,6 +1,3 @@
-stages:
-  - test
-  - build
 language: node_js
 services:
   - mongodb
