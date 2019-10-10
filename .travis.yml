@@ -3,9 +3,11 @@ jobs:
     - stage: deploy
       services:
         - docker
-      script:
-        - echo "$private_ssh" >> ~/.ssh/id_rsa
+      before_install:
+        - openssl aes-256-cbc -K $encrypted_9eee3a09da4e_key -iv $encrypted_9eee3a09da4e_iv -in id_rsa.enc -out ~\/.ssh/id_rsa -d
         - chmod 600 ~/.ssh/id_rsa
+        - eval "$(ssh-agent -s)"
+      script:
         - ssh-keyscan diogomachado.site >> $HOME/.ssh/known_hosts
         - cat  ~/.ssh/id_rsa
         - sshpass -p passphrase ssh-add ~/.ssh/id_rsa
