@@ -3,12 +3,13 @@ jobs:
     - stage: deploy
       services:
         - docker
-
-      script:
-        - touch ~/.ssh/id_rsa
-        - openssl aes-256-cbc -K $encrypted_9eee3a09da4e_key -iv $encrypted_9eee3a09da4e_iv -in id_rsa.enc -out ~\/.ssh/id_rsa -d
-        - chmod 600 ~/.ssh/id_rsa
+      before_install:
+        - openssl aes-256-cbc -K $encrypted_9eee3a09da4e_key -iv $encrypted_9eee3a09da4e_iv -in id_rsa.enc -out /tmp/git_deploy_key -d
+        - chmod 600 /tmp/git_deploy_key
+        - echo 'echo ${SSH_PASSPHRASE}' > /tmp/askpass && chmod +x /tmp/askpass
         - eval "$(ssh-agent -s)"
+        - DISPLAY=":0.0" SSH_ASKPASS="/tmp/askpass" setsid ssh-add /tmp/git_deploy_key </dev/null
+      script:
         - ssh-keyscan diogomachado.site >> $HOME/.ssh/known_hosts
         - cat  ~/.ssh/id_rsa
         - sshpass -p passphrase ssh-add ~/.ssh/id_rsa
