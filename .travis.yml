@@ -1,6 +1,10 @@
+stages:
+  - test
+  - build
 language: node_js
 services:
   - mongodb
+  - docker
 node_js:
 - '10'
 branches:
@@ -13,5 +17,11 @@ before_install:
   - npm update
 install:
   - npm install
-script:
-  - npm run test
+jobs:
+  include:
+    - stage: test
+    script:
+      - npm run test
+    - stage: build
+    script:
+      - docker build -t diogo8machado/meetapp-api .
