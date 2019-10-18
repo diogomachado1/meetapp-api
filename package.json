@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "debug": "node --inspect-brk -r sucrase/register src/server.js",
-    "queue": "nodemon src/queue.js",
+    "debug": "nodemon src/server.js",
+    "queue": "nodemon src/queue.js --inspect",
     "build": "sucrase ./src -d ./dist --transforms imports",
     "prestart": "sequelize db:migrate",
     "start": "NODE_ENV=production node dist/server.js",

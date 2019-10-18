@@ -32,6 +32,10 @@ class MeetupController {
       ],
     });
 
+    if (!meetup) {
+      return res.status(404).json({ error: 'Meetup not found' });
+    }
+
     return res.json(meetup);
   }
 
@@ -117,6 +121,10 @@ class MeetupController {
 
     const meetup = await Meetup.findByPk(req.params.id);
 
+    if (!meetup) {
+      return res.status(404).json({ error: 'Meetup not found' });
+    }
+
     if (meetup.past) {
       return res.status(400).json({ error: `You can't update past meetup` });
     }
@@ -143,6 +151,10 @@ class MeetupController {
     const user_id = req.userId;
 
     const meetup = await Meetup.findByPk(req.params.id);
+
+    if (!meetup) {
+      return res.status(404).json({ error: 'Meetup not found' });
+    }
 
     if (meetup.user_id !== user_id) {
       return res.status(401).json({ error: 'Not authorized.' });

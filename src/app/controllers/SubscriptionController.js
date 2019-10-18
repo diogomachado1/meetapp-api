@@ -123,6 +123,52 @@ class SubscriptionController {
     }
     return res.json(subscription);
   }
+
+  async delete(req, res) {
+    const user_id = req.userId;
+
+    const subscription = await Subscription.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['name', 'email'],
+        },
+        {
+          model: Meetup,
+          as: 'meetup',
+          attributes: ['title', 'user_id'],
+          include: [
+            {
+              model: User,
+              as: 'user',
+              attributes: ['name', 'email'],
+            },
+          ],
+        },
+      ],
+    });
+
+    if (!subscription) {
+      return res.status(404).json({ error: 'subscriptions not found' });
+    }
+
+    if (subscription.user_id !== user_id) {
+      return res.status(401).json({ error: 'Not authorized.' });
+    }
+
+    if (!subscription.cancellable) {
+      return res.status(400).json({ error: `You can't cancel subscribe` });
+    }
+
+    await subscription.destroy();
+    await Notification.create({
+      content: `O usuario ${subscription.user.name} cancelou a inscrição no meetup "${subscription.meetup.title}".`,
+      user: subscription.meetup.user_id,
+    });
+
+    return res.status(204).send();
+  }
 }
 
 export default new SubscriptionController();
