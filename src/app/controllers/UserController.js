@@ -1,5 +1,8 @@
 import * as Yup from 'yup';
+import jwt from 'jsonwebtoken';
+
 import User from '../models/User';
+import authConfig from '../../config/auth';
 
 class UserController {
   async store(req, res) {
@@ -25,13 +28,17 @@ class UserController {
       return res.status(400).json({ error: 'User already exists.' });
     }
 
-    const { id, name, email, provider } = await User.create(req.body);
+    const { id, name, email } = await User.create(req.body);
 
     return res.json({
-      id,
-      name,
-      email,
-      provider,
+      user: {
+        id,
+        name,
+        email,
+      },
+      token: jwt.sign({ id }, authConfig.secret, {
+        expiresIn: authConfig.expiresIn,
+      }),
     });
   }
 

@@ -18,7 +18,7 @@ describe('User', () => {
       .post('/users')
       .send(user);
 
-    expect(response.body).toHaveProperty('id');
+    expect(response.body).toHaveProperty('token');
   });
 
   it('should encrypt user password when new user created', async () => {

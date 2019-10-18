@@ -21,7 +21,7 @@ describe('Meetups', () => {
     const meetup = await factory.attrs('Meetup');
 
     const response = await request(app)
-      .post('/meetup')
+      .post('/meetups')
       .set('Authorization', `bearer ${token}`)
       .send({ ...meetup, file_id: file.id });
 
@@ -35,7 +35,7 @@ describe('Meetups', () => {
     });
 
     const response = await request(app)
-      .post('/meetup')
+      .post('/meetups')
       .set('Authorization', `bearer ${token}`)
       .send({ ...meetup, file_id: file.id });
 
@@ -46,7 +46,7 @@ describe('Meetups', () => {
     const { token, file, meetup } = await createMeetup();
     const newMeetup = await factory.attrs('Meetup');
     const response = await request(app)
-      .put(`/meetup/${meetup.id}`)
+      .put(`/meetups/${meetup.id}`)
       .set('Authorization', `bearer ${token}`)
       .send({ ...newMeetup, file_id: file.id });
 
@@ -59,7 +59,7 @@ describe('Meetups', () => {
       date: faker.date.past().toISOString(),
     });
     const response = await request(app)
-      .put(`/meetup/${meetup.id}`)
+      .put(`/meetups/${meetup.id}`)
       .set('Authorization', `bearer ${token}`)
       .send({ ...newMeetup, file_id: file.id });
     expect(response.status).toBe(400);
@@ -73,7 +73,7 @@ describe('Meetups', () => {
     });
     const newMeetup = await factory.attrs('Meetup');
     const response = await request(app)
-      .put(`/meetup/${meetup.id}`)
+      .put(`/meetups/${meetup.id}`)
       .set('Authorization', `bearer ${token}`)
       .send({ ...newMeetup, file_id: file.id });
     expect(response.status).toBe(400);
@@ -84,7 +84,7 @@ describe('Meetups', () => {
     const { token } = await createTokenAndUser();
     const newMeetup = await factory.attrs('Meetup');
     const response = await request(app)
-      .put(`/meetup/${meetup.id}`)
+      .put(`/meetups/${meetup.id}`)
       .set('Authorization', `bearer ${token}`)
       .send({ ...newMeetup, file_id: file.id });
     expect(response.status).toBe(401);
@@ -93,7 +93,7 @@ describe('Meetups', () => {
   it('should be able to see your own meetups', async () => {
     const { token, meetup } = await createMeetup();
     const response = await request(app)
-      .get(`/meetup`)
+      .get(`/meetups`)
       .set('Authorization', `bearer ${token}`);
     expect(response.body).toMatchObject([meetup]);
   });
@@ -101,7 +101,7 @@ describe('Meetups', () => {
   it('should be able to see a single meetup', async () => {
     const { token, meetup } = await createMeetup();
     const response = await request(app)
-      .get(`/meetup/${meetup.id}`)
+      .get(`/meetups/${meetup.id}`)
       .set('Authorization', `bearer ${token}`);
     expect(response.body).toMatchObject(meetup);
   });
@@ -109,7 +109,7 @@ describe('Meetups', () => {
   it('should be able to owner delete your own meetups', async () => {
     const { token, meetup } = await createMeetup();
     const response = await request(app)
-      .delete(`/meetup/${meetup.id}`)
+      .delete(`/meetups/${meetup.id}`)
       .set('Authorization', `bearer ${token}`);
     expect(response.status).toBe(204);
   });
@@ -123,7 +123,7 @@ describe('Meetups', () => {
     });
 
     const response = await request(app)
-      .delete(`/meetup/${meetup.id}`)
+      .delete(`/meetups/${meetup.id}`)
       .set('Authorization', `bearer ${token}`);
     expect(response.status).toBe(400);
   });
@@ -132,7 +132,7 @@ describe('Meetups', () => {
     const { meetup } = await createMeetup();
     const { token } = await createTokenAndUser();
     const response = await request(app)
-      .delete(`/meetup/${meetup.id}`)
+      .delete(`/meetups/${meetup.id}`)
       .set('Authorization', `bearer ${token}`);
     expect(response.status).toBe(401);
   });

@@ -21,6 +21,7 @@ class MeetupController {
       include: [
         {
           model: File,
+          as: 'file',
           attributes: ['id', 'name', 'path', 'url'],
         },
         {
@@ -49,6 +50,7 @@ class MeetupController {
       include: [
         {
           model: File,
+          as: 'file',
           attributes: ['name', 'path', 'url'],
         },
         {

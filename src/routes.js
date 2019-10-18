@@ -24,11 +24,11 @@ routes.get('/testAuth', (req, res) => res.send('Test Auth'));
 
 routes.put('/users', UserController.update);
 
-routes.get('/meetup', MeetupController.index);
-routes.get('/meetup/:id', MeetupController.show);
-routes.post('/meetup', MeetupController.store);
-routes.put('/meetup/:id', MeetupController.update);
-routes.delete('/meetup/:id', MeetupController.delete);
+routes.get('/meetups', MeetupController.index);
+routes.get('/meetups/:id', MeetupController.show);
+routes.post('/meetups', MeetupController.store);
+routes.put('/meetups/:id', MeetupController.update);
+routes.delete('/meetups/:id', MeetupController.delete);
 
 routes.get('/organizing', OrganizingController.index);
 routes.get('/subscriptions', SubscriptionController.index);

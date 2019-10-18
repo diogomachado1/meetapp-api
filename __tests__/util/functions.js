@@ -10,7 +10,7 @@ async function createUser() {
   const { body } = await request(app)
     .post('/users')
     .send(user);
-  user = { ...user, ...body };
+  user = { ...user, ...body.user };
   return user;
 }
 
@@ -42,7 +42,7 @@ async function createMeetup() {
   const { token, user, file } = await createFile();
   const meetup = await factory.attrs('Meetup');
   const { body } = await request(app)
-    .post('/meetup')
+    .post('/meetups')
     .send({ ...meetup, file_id: file.id })
     .set('Authorization', `bearer ${token}`);
   return { meetup: body, file, user, token };
