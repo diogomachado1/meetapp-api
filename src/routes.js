@@ -36,7 +36,7 @@ routes.get('/subscriptions', SubscriptionController.index);
 routes.post('/meetups/:meetupId/subscriptions', SubscriptionController.store);
 routes.delete('/subscriptions/:id', SubscriptionController.delete);
 
-routes.post('/file', upload.single('file'), FileController.store);
+routes.post('/files', upload.single('file'), FileController.store);
 
 routes.get('/notifications', NotificationController.index);
 routes.put('/notifications/:id', NotificationController.update);
