@@ -38,6 +38,6 @@ describe('Organizing', () => {
     const response = await request(app)
       .get(`/organizing?date=${date.toISOString()}`)
       .set('Authorization', `bearer ${token}`);
-    expect(isSameDay(date, parseISO(response.body[0].date))).toBe(true);
+    expect(isSameDay(date, parseISO(response.body.rows[0].date))).toBe(true);
   });
 });

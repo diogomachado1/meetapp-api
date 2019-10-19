@@ -2,6 +2,7 @@ import { Op } from 'sequelize';
 import * as Yup from 'yup';
 
 import { endOfDay, startOfDay, parseISO } from 'date-fns';
+import { zonedTimeToUtc } from 'date-fns-tz';
 
 import Meetup from '../models/Meetup';
 import User from '../models/User';
@@ -14,19 +15,23 @@ class OrganizingController {
       date: Yup.date().min(startOfDay(new Date())),
       page: Yup.number().positive(),
     });
+    const dateTimeZone = parseISO(date);
 
     try {
       await schema.validate({ date, page });
     } catch (error) {
       return res.status(400).json({ error: error.errors[0] });
     }
-    const meetups = await Meetup.findAll({
+    const meetups = await Meetup.findAndCountAll({
       where: {
         user_id: {
           [Op.ne]: req.userId,
         },
         date: {
-          [Op.between]: [startOfDay(parseISO(date)), endOfDay(parseISO(date))],
+          [Op.between]: [
+            zonedTimeToUtc(startOfDay(dateTimeZone), 'America/Fortaleza'),
+            zonedTimeToUtc(endOfDay(dateTimeZone), 'America/Fortaleza'),
+          ],
         },
       },
       attributes: [
@@ -50,6 +55,7 @@ class OrganizingController {
           attributes: ['name', 'email'],
         },
       ],
+      order: [['date']],
       limit: 10,
       offset: 10 * (page - 1),
     });
