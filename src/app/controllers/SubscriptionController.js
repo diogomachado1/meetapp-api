@@ -7,6 +7,7 @@ import SubscriptionMail from '../jobs/SubscriptionMail';
 import Queue from '../../libs/Queue';
 import User from '../models/User';
 import Notification from '../schemas/Notification';
+import File from '../models/File';
 
 class SubscriptionController {
   async index(req, res) {
@@ -18,6 +19,18 @@ class SubscriptionController {
         {
           model: Meetup,
           as: 'meetup',
+          include: [
+            {
+              model: File,
+              as: 'file',
+              attributes: ['name', 'path', 'url'],
+            },
+            {
+              model: User,
+              as: 'user',
+              attributes: ['name', 'email'],
+            },
+          ],
           where: {
             date: {
               [Op.gt]: new Date(),
