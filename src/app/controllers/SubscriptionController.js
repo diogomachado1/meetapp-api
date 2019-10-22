@@ -150,7 +150,6 @@ class SubscriptionController {
         {
           model: Meetup,
           as: 'meetup',
-          attributes: ['title', 'user_id'],
           include: [
             {
               model: User,
