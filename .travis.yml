@@ -19,9 +19,7 @@ jobs:
       script:
         - npm run test
     - stage: deploy
-      language: node_js
-      node_js:
-      - '10'
+      language: python
       services:
         - docker
       before_install:
