@@ -1,7 +1,7 @@
 import { Op } from 'sequelize';
 import * as Yup from 'yup';
 
-import { endOfDay, startOfDay, parseISO } from 'date-fns';
+import { endOfDay, startOfDay, parseISO, format } from 'date-fns';
 import { zonedTimeToUtc, utcToZonedTime } from 'date-fns-tz';
 
 import Meetup from '../models/Meetup';
@@ -10,7 +10,13 @@ import File from '../models/File';
 
 class OrganizingController {
   async index(req, res) {
-    const { date = new Date().toISOString(), page = 1 } = req.query;
+    const {
+      date = format(
+        utcToZonedTime(new Date(), 'America/Fortaleza'),
+        'yyyy-MM-dd'
+      ),
+      page = 1,
+    } = req.query;
     const schema = Yup.object().shape({
       date: Yup.date().min(
         startOfDay(utcToZonedTime(new Date(), 'America/Fortaleza'))
