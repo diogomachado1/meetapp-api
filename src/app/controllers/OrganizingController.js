@@ -13,7 +13,7 @@ class OrganizingController {
     const { date = new Date().toISOString(), page = 1 } = req.query;
     const schema = Yup.object().shape({
       date: Yup.date().min(
-        startOfDay(utcToZonedTime(new Date()), 'America/Fortaleza')
+        startOfDay(utcToZonedTime(new Date(), 'America/Fortaleza'))
       ),
       page: Yup.number().positive(),
     });
