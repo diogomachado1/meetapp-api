@@ -12,8 +12,10 @@
     "start": "NODE_ENV=production node dist/server.js",
     "pretest": "NODE_ENV=test sequelize db:migrate",
     "test": "NODE_ENV=test jest  --coverage --coverageReporters=text-lcov --detectOpenHandles --forceExit",
-    "coveralls": "NODE_ENV=test jest  --coverage --coverageReporters=text-lcov --detectOpenHandles --forceExit  | coveralls",
     "posttest": "NODE_ENV=test sequelize db:migrate:undo:all",
+    "precoveralls": "NODE_ENV=test sequelize db:migrate",
+    "coveralls": "NODE_ENV=test jest  --coverage --coverageReporters=text-lcov --detectOpenHandles --forceExit  | coveralls",
+    "postcoveralls": "NODE_ENV=test sequelize db:migrate:undo:all",
     "pretest:watch": "NODE_ENV=test sequelize db:migrate",
     "test:watch": "NODE_ENV=test jest --watch --detectOpenHandles",
     "posttest:watch": "NODE_ENV=test sequelize db:migrate:undo:all"
